@@ -8,7 +8,7 @@ public class Customer implements Runnable {
 	private int reqQuantity;
 	private Market market;
 
-	public Customer(int numOfApples, int numOfBananas, int numOfOranges, int numOfGrapes, Market myMarket) {
+	public Customer(int numOfApples, int numOfOranges, int numOfBananas, int numOfGrapes, Market myMarket) {
 		this.market = myMarket;
 		requirements = new HashMap<String, Integer>();
 		requirements.put("Apple", numOfApples);
@@ -19,6 +19,11 @@ public class Customer implements Runnable {
 	}
 
 	public void run() {
-		// consume
+		try {
+			// consume
+			market.buy(reqQuantity, requirements);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 }
