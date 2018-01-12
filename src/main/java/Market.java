@@ -7,18 +7,18 @@ public class Market {
 	private HashMap<String, Integer> availFruits;
 	private final int marketCapacity;
 	private static int availSpace;
-	private int numOfFruits;
+	private int numOfFruitTypes;
 
 	public int getMarketCapacity() {
 		return marketCapacity;
 	}
 
 	public int getNumOfFruits() {
-		return numOfFruits;
+		return numOfFruitTypes;
 	}
 
-	public void setNumOfFruits(int numOfFruits) {
-		this.numOfFruits = numOfFruits;
+	public void setNumOfFruits(int numOfFruitTypes) {
+		this.numOfFruitTypes = numOfFruitTypes;
 	}
 
 	public Market(int marketCapacity) {
@@ -45,15 +45,10 @@ public class Market {
 				availSpace -= reqSlots;
 			}
 		}
-		for (HashMap.Entry<String, Integer> entry : availWithFarmer.entrySet()) {
-			if (availFruits.containsKey(entry.getKey())) {
-				availFruits.put(entry.getKey(), entry.getValue() + availFruits.get(entry.getKey()));
-			} else {
-				availFruits.put(entry.getKey(), entry.getValue());
-			}
-		}
+		updateMarket(availWithFarmer, 1);
 		notifyAll();
-		System.out.println("Farmer added "+ reqSlots +" fruits to market.\n"+ availSpace +" slots empty in market:");
+		System.out
+				.println("Farmer added " + reqSlots + " fruits to market.\n" + availSpace + " slots empty in market:");
 		display();
 
 	}
@@ -67,7 +62,6 @@ public class Market {
 			for (HashMap.Entry<String, Integer> entry : requirements.entrySet()) {
 				if (entry.getValue() > availFruits.get(entry.getKey())) {
 					flag = false;
-					// error
 				}
 			}
 			if (flag == false) {
@@ -78,13 +72,7 @@ public class Market {
 				break;
 			}
 		}
-		for (HashMap.Entry<String, Integer> entry : requirements.entrySet()) {
-			if (availFruits.containsKey(entry.getKey())) {
-				availFruits.put(entry.getKey(), availFruits.get(entry.getKey()) - entry.getValue());
-			} else {
-				availFruits.put(entry.getKey(), entry.getValue());
-			}
-		}
+		updateMarket(requirements, 2);
 		notifyAll();
 		System.out.println(
 				"Customer bought " + reqQuantity + " fruits from market.\n" + availSpace + " slots empty in market:");
@@ -95,6 +83,21 @@ public class Market {
 	public synchronized void display() {
 		for (HashMap.Entry<String, Integer> entry : availFruits.entrySet()) {
 			System.out.println(entry.getKey() + " : " + entry.getValue());
+		}
+	}
+
+	public void updateMarket(HashMap<String, Integer> map, int choice) {
+		for (HashMap.Entry<String, Integer> entry : map.entrySet()) {
+			int tempValue = 0;
+			if (availFruits.containsKey(entry.getKey())) {
+				if (choice == 1)
+					tempValue = entry.getValue() + availFruits.get(entry.getKey());
+				else if (choice == 2)
+					tempValue = availFruits.get(entry.getKey()) - entry.getValue();
+				availFruits.put(entry.getKey(), tempValue);
+			} else {
+				availFruits.put(entry.getKey(), entry.getValue());
+			}
 		}
 	}
 }
