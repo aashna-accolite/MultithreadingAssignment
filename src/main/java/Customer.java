@@ -20,9 +20,12 @@ public class Customer implements Runnable {
 
 	public void run() {
 		try {
-			// consume
+
 			market.buy(reqQuantity, requirements);
-		} catch (InterruptedException e) {
+
+		} catch (
+
+		InterruptedException e) {
 			e.printStackTrace();
 		}
 	}

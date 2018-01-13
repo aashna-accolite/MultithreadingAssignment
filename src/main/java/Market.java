@@ -4,9 +4,9 @@ import java.util.HashMap;
 
 public class Market {
 
-	private HashMap<String, Integer> availFruits;
+	public HashMap<String, Integer> availFruits;
 	private final int marketCapacity;
-	private static int availSpace;
+	public static int availSpace;
 	private int numOfFruitTypes;
 
 	public int getMarketCapacity() {
@@ -39,6 +39,7 @@ public class Market {
 		else {
 			while (availSpace < reqSlots) {
 				wait();
+
 				System.out.println("Farmer waiting");
 			}
 			if (availSpace >= reqSlots) {
@@ -46,10 +47,10 @@ public class Market {
 			}
 		}
 		updateMarket(availWithFarmer, 1);
-		notifyAll();
 		System.out
 				.println("Farmer added " + reqSlots + " fruits to market.\n" + availSpace + " slots empty in market:");
 		display();
+		notifyAll();
 
 	}
 
@@ -62,6 +63,7 @@ public class Market {
 			for (HashMap.Entry<String, Integer> entry : requirements.entrySet()) {
 				if (entry.getValue() > availFruits.get(entry.getKey())) {
 					flag = false;
+					break;
 				}
 			}
 			if (flag == false) {
@@ -73,10 +75,10 @@ public class Market {
 			}
 		}
 		updateMarket(requirements, 2);
-		notifyAll();
 		System.out.println(
 				"Customer bought " + reqQuantity + " fruits from market.\n" + availSpace + " slots empty in market:");
 		display();
+		notifyAll();
 
 	}
 
@@ -86,7 +88,7 @@ public class Market {
 		}
 	}
 
-	public void updateMarket(HashMap<String, Integer> map, int choice) {
+	public synchronized void updateMarket(HashMap<String, Integer> map, int choice) {
 		for (HashMap.Entry<String, Integer> entry : map.entrySet()) {
 			int tempValue = 0;
 			if (availFruits.containsKey(entry.getKey())) {

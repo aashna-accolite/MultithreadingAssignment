@@ -20,7 +20,7 @@ public class Farmer implements Runnable {
 
 	public void run() {
 		try {
-			// produce
+
 			market.sell(availWithFarmer, reqSlots);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
