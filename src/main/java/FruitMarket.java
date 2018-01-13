@@ -8,7 +8,7 @@ public class FruitMarket {
 
 		Random random = new Random();
 
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 20; i++) {
 			if (random.nextBoolean()) {
 				Farmer f1 = new Farmer(random.nextInt(10), random.nextInt(10), random.nextInt(10), random.nextInt(10),
 						myMarket);

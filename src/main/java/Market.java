@@ -32,30 +32,30 @@ public class Market {
 	}
 
 	// synchronized produce
-	public synchronized void sell(HashMap<String, Integer> availWithFarmer, int reqSlots) throws InterruptedException {
+	public synchronized void sell(HashMap<String, Integer> availWithFarmer, int reqSlots, int farmerId)
+			throws InterruptedException {
 
 		if (availSpace >= reqSlots)
 			availSpace -= reqSlots;
 		else {
 			while (availSpace < reqSlots) {
+				System.out.println("Farmer-" + farmerId + " waiting");
 				wait();
-
-				System.out.println("Farmer waiting");
 			}
 			if (availSpace >= reqSlots) {
 				availSpace -= reqSlots;
 			}
 		}
 		updateMarket(availWithFarmer, 1);
-		System.out
-				.println("Farmer added " + reqSlots + " fruits to market.\n" + availSpace + " slots empty in market:");
+		System.out.println("Farmer-" + farmerId + " added " + reqSlots + " fruits to market.\n" + availSpace
+				+ " slots empty in market:");
 		display();
 		notifyAll();
-
 	}
 
 	// synchronized consume
-	public synchronized void buy(int reqQuantity, HashMap<String, Integer> requirements) throws InterruptedException {
+	public synchronized void buy(int reqQuantity, HashMap<String, Integer> requirements, int customerId)
+			throws InterruptedException {
 
 		boolean flag = false;
 		while (flag == false) {
@@ -67,16 +67,16 @@ public class Market {
 				}
 			}
 			if (flag == false) {
+				System.out.println("Customer-" + customerId + " waiting");
 				wait();
-				System.out.println("Customer waiting");
 			} else {
 				availSpace += reqQuantity;
 				break;
 			}
 		}
 		updateMarket(requirements, 2);
-		System.out.println(
-				"Customer bought " + reqQuantity + " fruits from market.\n" + availSpace + " slots empty in market:");
+		System.out.println("Customer-" + customerId + " bought " + reqQuantity + " fruits from market.\n" + availSpace
+				+ " slots empty in market:");
 		display();
 		notifyAll();
 
