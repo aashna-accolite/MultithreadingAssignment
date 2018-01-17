@@ -1,6 +1,7 @@
 package main.java;
 
 import java.util.HashMap;
+import java.util.Random;
 
 public class Customer implements Runnable {
 
@@ -10,16 +11,12 @@ public class Customer implements Runnable {
 	private Market market;
 	private static int countCustomer;
 
-	public Customer(int numOfApples, int numOfOranges, int numOfBananas, int numOfGrapes, Market myMarket) {
+	public Customer(Market myMarket) {
 		this.market = myMarket;
 		countCustomer++;
 		this.customerId=countCustomer;
-		requirements = new HashMap<String, Integer>();
-		requirements.put("Apple", numOfApples);
-		requirements.put("Orange", numOfOranges);
-		requirements.put("Banana", numOfBananas);
-		requirements.put("Grapes", numOfGrapes);
-		reqQuantity = numOfApples + numOfOranges + numOfBananas + numOfGrapes;
+		generateRequirements();
+		reqQuantity = generateRequiredQuantity(requirements);
 	}
 
 	public void run() {
@@ -30,5 +27,22 @@ public class Customer implements Runnable {
 		InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void generateRequirements() {
+		Random random = new Random();
+		requirements = new HashMap<String, Integer>();
+		requirements.put("Apple", random.nextInt(10));
+		requirements.put("Orange", random.nextInt(10));
+		requirements.put("Banana", random.nextInt(10));
+		requirements.put("Grapes", random.nextInt(10));
+	}
+
+	public int generateRequiredQuantity(HashMap<String, Integer> requirements) {
+		int tempSum = 0;
+		for (int temp : requirements.values()) {
+			tempSum += temp;
+		}
+		return tempSum;
 	}
 }

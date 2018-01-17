@@ -10,13 +10,11 @@ public class FruitMarket {
 
 		for (int i = 0; i < 20; i++) {
 			if (random.nextBoolean()) {
-				Farmer f1 = new Farmer(random.nextInt(10), random.nextInt(10), random.nextInt(10), random.nextInt(10),
-						myMarket);
+				Farmer f1 = new Farmer(myMarket);
 				Thread t1 = new Thread(f1);
 				t1.start();
 			} else {
-				Customer c1 = new Customer(random.nextInt(10), random.nextInt(10), random.nextInt(10),
-						random.nextInt(10), myMarket);
+				Customer c1 = new Customer(myMarket);
 				Thread t4 = new Thread(c1);
 				t4.start();
 			}
