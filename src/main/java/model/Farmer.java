@@ -1,7 +1,8 @@
-package main.java;
+package main.java.model;
 
 import java.util.HashMap;
-import java.util.Random;
+
+import main.java.utility.Utility;
 
 public class Farmer implements Runnable {
 
@@ -10,30 +11,24 @@ public class Farmer implements Runnable {
 	public Market market;
 	private int farmerId;
 	static int countFarmer;
-
+	private Utility utility;
+	
 	public Farmer(Market myMarket) {
+		this.utility = new Utility();
 		this.market = myMarket;
 		countFarmer++;
 		this.farmerId = countFarmer;
 		generateSellingStock();
-		reqSlots = generateRequiredSlots(availWithFarmer);
+		this.reqSlots = generateRequiredSlots();
 	}
 
 	public void generateSellingStock() {
-		Random random = new Random();
 		availWithFarmer = new HashMap<String, Integer>();
-		availWithFarmer.put("Apple", random.nextInt(10));
-		availWithFarmer.put("Orange", random.nextInt(10));
-		availWithFarmer.put("Banana", random.nextInt(10));
-		availWithFarmer.put("Grapes", random.nextInt(10));
+		utility.generateBag(availWithFarmer);
 	}
 
-	public int generateRequiredSlots(HashMap<String, Integer> availWithFarmer) {
-		int tempSum = 0;
-		for (int temp : availWithFarmer.values()) {
-			tempSum += temp;
-		}
-		return tempSum;
+	public int generateRequiredSlots() {
+		return utility.generateTotalReq(availWithFarmer);
 	}
 
 	public void run() {

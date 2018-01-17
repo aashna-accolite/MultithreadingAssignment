@@ -1,4 +1,4 @@
-package main.java;
+package main.java.model;
 
 import java.util.HashMap;
 
@@ -34,7 +34,6 @@ public class Market {
 	// synchronized produce
 	public synchronized void sell(HashMap<String, Integer> availWithFarmer, int reqSlots, int farmerId)
 			throws InterruptedException {
-
 		if (availSpace >= reqSlots)
 			availSpace -= reqSlots;
 		else {

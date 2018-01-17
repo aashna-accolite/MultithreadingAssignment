@@ -1,10 +1,13 @@
-package main.java;
+package main.java.app;
 
 import java.util.Random;
+import main.java.model.Customer;
+import main.java.model.Farmer;
+import main.java.model.Market;
 
 public class FruitMarket {
 	public static void main(String args[]) {
-		Market myMarket = new Market(50);
+		Market myMarket = new Market(100);
 
 		Random random = new Random();
 
