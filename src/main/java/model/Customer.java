@@ -6,7 +6,7 @@ import main.java.utility.Utility;
 
 public class Customer implements Runnable {
 
-	private HashMap<String, Integer> requirements;
+	public HashMap<String, Integer> requirements;
 	private int reqQuantity;
 	private int customerId;
 	private Market market;
@@ -16,8 +16,8 @@ public class Customer implements Runnable {
 	public Customer(Market myMarket) {
 		this.utility = new Utility();
 		this.market = myMarket;
-		countCustomer++;
-		this.customerId = countCustomer;
+		this.customerId = ++countCustomer;
+		requirements = new HashMap<String, Integer>();
 		generateRequirements();
 		this.reqQuantity = generateRequiredQuantity();
 	}
@@ -31,11 +31,14 @@ public class Customer implements Runnable {
 	}
 
 	public void generateRequirements() {
-		requirements = new HashMap<String, Integer>();
 		utility.generateBag(requirements);
 	}
 
 	public int generateRequiredQuantity() {
 		return utility.generateTotalReq(requirements);
+	}
+
+	public HashMap<String, Integer> getRequirements() {
+		return requirements;
 	}
 }

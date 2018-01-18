@@ -6,19 +6,10 @@ public class Market {
 
 	public HashMap<String, Integer> availFruits;
 	private final int marketCapacity;
-	public static int availSpace;
-	private int numOfFruitTypes;
-
+	public int availSpace;
+	
 	public int getMarketCapacity() {
 		return marketCapacity;
-	}
-
-	public int getNumOfFruits() {
-		return numOfFruitTypes;
-	}
-
-	public void setNumOfFruits(int numOfFruitTypes) {
-		this.numOfFruitTypes = numOfFruitTypes;
 	}
 
 	public Market(int marketCapacity) {
@@ -28,7 +19,7 @@ public class Market {
 		availFruits.put("Banana", 0);
 		availFruits.put("Grapes", 0);
 		this.marketCapacity = marketCapacity;
-		this.availSpace = marketCapacity;
+		availSpace = marketCapacity;
 	}
 
 	// synchronized produce
@@ -45,9 +36,9 @@ public class Market {
 				availSpace -= reqSlots;
 			}
 		}
-		updateMarket(availWithFarmer, 1);
+		updateMarket(availWithFarmer, true);
 		System.out.println("Farmer-" + farmerId + " added " + reqSlots + " fruits to market.\n" + availSpace
-				+ " slots empty in market:");
+				+ " slots empty in market:\n");
 		display();
 		notifyAll();
 	}
@@ -73,12 +64,11 @@ public class Market {
 				break;
 			}
 		}
-		updateMarket(requirements, 2);
+		updateMarket(requirements, false);
 		System.out.println("Customer-" + customerId + " bought " + reqQuantity + " fruits from market.\n" + availSpace
-				+ " slots empty in market:");
+				+ " slots empty in market:\n");
 		display();
 		notifyAll();
-
 	}
 
 	public synchronized void display() {
@@ -87,13 +77,13 @@ public class Market {
 		}
 	}
 
-	public synchronized void updateMarket(HashMap<String, Integer> map, int choice) {
+	public synchronized void updateMarket(HashMap<String, Integer> map, boolean isFarmer) {
 		for (HashMap.Entry<String, Integer> entry : map.entrySet()) {
 			int tempValue = 0;
 			if (availFruits.containsKey(entry.getKey())) {
-				if (choice == 1)
+				if (isFarmer)
 					tempValue = entry.getValue() + availFruits.get(entry.getKey());
-				else if (choice == 2)
+				else
 					tempValue = availFruits.get(entry.getKey()) - entry.getValue();
 				availFruits.put(entry.getKey(), tempValue);
 			} else {

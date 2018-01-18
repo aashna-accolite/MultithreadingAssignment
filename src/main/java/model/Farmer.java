@@ -12,23 +12,14 @@ public class Farmer implements Runnable {
 	private int farmerId;
 	static int countFarmer;
 	private Utility utility;
-	
+
 	public Farmer(Market myMarket) {
 		this.utility = new Utility();
 		this.market = myMarket;
-		countFarmer++;
-		this.farmerId = countFarmer;
+		this.farmerId = ++countFarmer;
+		availWithFarmer = new HashMap<String, Integer>();
 		generateSellingStock();
 		this.reqSlots = generateRequiredSlots();
-	}
-
-	public void generateSellingStock() {
-		availWithFarmer = new HashMap<String, Integer>();
-		utility.generateBag(availWithFarmer);
-	}
-
-	public int generateRequiredSlots() {
-		return utility.generateTotalReq(availWithFarmer);
 	}
 
 	public void run() {
@@ -37,5 +28,17 @@ public class Farmer implements Runnable {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void generateSellingStock() {
+		utility.generateBag(availWithFarmer);
+	}
+
+	public int generateRequiredSlots() {
+		return utility.generateTotalReq(availWithFarmer);
+	}
+	
+	public HashMap<String, Integer> getAvailWithFarmer() {
+		return availWithFarmer;
 	}
 }
